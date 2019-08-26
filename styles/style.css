@@ -75,3 +75,7 @@ button {
   background-color: #ccc;
   border: 1px solid black;
 }
+
+.markAsDone {
+  background-color: red;
+}

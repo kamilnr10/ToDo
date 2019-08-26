@@ -19,9 +19,9 @@ function prepareDOMElements() {
   $list = document.getElementById('list');
   $inToDo = document.getElementById('myInput');
   $inputBtn = document.getElementById('addTodo');
-  $delBtn = document.getElementsByClassName('del');
-  $editBtn = document.getElementsByClassName('editB');
-  $doneBtn = document.getElementsByClassName('done');
+  $delBtn = document.getElementById('del');
+  $editBtn = document.getElementById('edit');
+  $doneBtn = document.getElementById('done');
   $showModal = document.getElementById('myModal');
   $popIn = document.getElementById('popupInput');
   $closeBtn = document.getElementById('closePopup');
@@ -36,7 +36,7 @@ function prepareDOMEvents() {
   $inputBtn.addEventListener('click', addElement);
   $closeBtn.addEventListener('click', listClickManager);
   $cancelBtn.addEventListener('click', closePopup);
-  $editBtn.addEventListener('click', listClickManager);
+  // $editBtn.addEventListener('click', listClickManager);
   // $delBtn.addEventListener('click', listClickManager);
   // $popInput.addEventListener('click', listClickManager);
 
@@ -56,6 +56,7 @@ function addNewElementToList(title /* Title, author, id */ ) {
   // $list.appendChild(createElement('nowy', 2))
   const newElement = createElement(title);
   $list.appendChild(newElement);
+
 }
 
 function createElement(title /* Title, author, id */ ) {
@@ -64,9 +65,24 @@ function createElement(title /* Title, author, id */ ) {
   const newElement = document.createElement('li');
   newElement.classList.add("liElement");
   newElement.innerText = title;
-  newElement.innerHTML = title + "<button class='del'>Delete</button> <button class='editB'>Edit</button> <button class='done'>Mark as Done</button>";
+
+  let delBtn = document.createElement('button');
+  delBtn.id = 'del';
+  delBtn.innerText = 'Delete';
+  newElement.appendChild(delBtn);
+
+  let editBtn = document.createElement('button');
+  editBtn.id = 'edit';
+  editBtn.innerText = 'Edit';
+  newElement.appendChild(editBtn);
+
+  let doneBtn = document.createElement('button');
+  doneBtn.id = 'done';
+  doneBtn.innerText = 'Mark as Done';
+  newElement.appendChild(doneBtn);
 
   return newElement;
+
 }
 
 // if (event.target.id === 'addTodo') {
@@ -87,17 +103,16 @@ function listClickManager(event) {
   // event.target.parentElement.id
   // if (event.target.className === 'edit') { editListElement(id) }
 
-  if (event.target.className === 'del') {
+  if (event.target.id === 'del') {
     removeListElement();
-  } else if (event.target.className === 'edit') {
+  } else if (event.target.id === 'edit') {
     openPopup();
     editListElement();
-  } else(event.target.className === 'close') {
-    closePopup();
-  }
-
-
+  } else(event.target.id === 'done')
+  markElementAsDone();
 }
+
+
 
 function removeListElement( /* id */ ) {
   // Usuwanie elementu z listy
@@ -108,8 +123,6 @@ function removeListElement( /* id */ ) {
 function editListElement( /* id */ ) {
   // Pobranie informacji na temat zadania
   // Umieść dane w popupie
-
-  const newElement = document.querySelector('li');
 
 
 
@@ -145,6 +158,8 @@ function declineChanges() { //niepotrzebna raczej
 
 function markElementAsDone( /* id */ ) {
   //zaznacz element jako wykonany (podmień klasę CSS)
+  // const newElement = document.querySelector('li');
+  // $list.classList('markAsDone');
 }
 
 document.addEventListener('DOMContentLoaded', main);
