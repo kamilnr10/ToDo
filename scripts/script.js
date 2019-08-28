@@ -6,6 +6,9 @@ let $editBtn;
 let $popInput;
 let $closeBtn;
 let $cancelBtn;
+let btnBox;
+let lastTodo = 0;
+let currentTodo;
 const initialList = ['Dzisiaj robię usuwanie', 'Nakarm psa', 'W weekend muszę zrobić aplikację ToDo'];
 
 function main() {
@@ -32,16 +35,10 @@ function prepareDOMElements() {
 function prepareDOMEvents() {
   // Przygotowanie listenerów
   $list.addEventListener('click', listClickManager);
-  // $inToDo.addEventListener('click', listClickManager);
   $inputBtn.addEventListener('click', addElement);
-  $closeBtn.addEventListener('click', listClickManager);
   $cancelBtn.addEventListener('click', closePopup);
-  // $editBtn.addEventListener('click', listClickManager);
-  // $delBtn.addEventListener('click', listClickManager);
-  // $popInput.addEventListener('click', listClickManager);
-
-
-  // $doneBtn.addEventListener('click', listClickManager);
+  $okBtn.addEventListener('click', acceptChangeHandler);
+  $closeBtn.addEventListener('click', closePopup)
 }
 
 function prepareInitialList() {
@@ -64,23 +61,37 @@ function createElement(title /* Title, author, id */ ) {
   // return newElement
   const newElement = document.createElement('li');
   newElement.classList.add("liElement");
-  newElement.innerText = title;
+  lastTodo += 1;
+  newElement.id = 'todo-' + lastTodo;
+
+  const newTitleElement = document.createElement('span');
+  newTitleElement.classList.add("titleElement");
+  newTitleElement.innerText = title;
+
+
+  let btnBox = document.createElement('div');
+  btnBox.classList.add('btn-box');
+
 
   let delBtn = document.createElement('button');
-  delBtn.id = 'del';
+  delBtn.className = 'del';
   delBtn.innerText = 'Delete';
-  newElement.appendChild(delBtn);
+
 
   let editBtn = document.createElement('button');
-  editBtn.id = 'edit';
+  editBtn.className = 'edit';
   editBtn.innerText = 'Edit';
-  newElement.appendChild(editBtn);
+
 
   let doneBtn = document.createElement('button');
-  doneBtn.id = 'done';
+  doneBtn.className = 'done';
   doneBtn.innerText = 'Mark as Done';
-  newElement.appendChild(doneBtn);
 
+  newElement.appendChild(newTitleElement);
+  newElement.appendChild(btnBox);
+  btnBox.appendChild(delBtn);
+  btnBox.appendChild(editBtn);
+  btnBox.appendChild(doneBtn);
   return newElement;
 
 }
@@ -103,39 +114,49 @@ function listClickManager(event) {
   // event.target.parentElement.id
   // if (event.target.className === 'edit') { editListElement(id) }
 
-  if (event.target.id === 'del') {
-    removeListElement();
-  } else if (event.target.id === 'edit') {
-    openPopup();
-    editListElement();
-  } else(event.target.id === 'done')
-  markElementAsDone();
-}
+  let id = event.target.parentElement.parentElement.id
+
+  if (event.target.className === 'del') {
+    let id = event.target.parentElement.parentElement.id;
+    removeListElement(id);
+  } else if (event.target.className === 'edit') {
+    let title = document.querySelector('#' + id).querySelector('span').innerText;
+    editListElement(id, title);
+  } else if (event.target.className === 'done') {
+
+  }
+};
 
 
-
-function removeListElement( /* id */ ) {
+function removeListElement(id) {
   // Usuwanie elementu z listy
-  const newElement = document.querySelector('li');
-  $list.removeChild(newElement);
-}
+  let liElement = document.querySelector('#' + id);
+  $list.removeChild(liElement);
+};
 
-function editListElement( /* id */ ) {
+function editListElement(id, title) {
   // Pobranie informacji na temat zadania
   // Umieść dane w popupie
+  openPopup();
+  $popIn.value = title;
+};
 
-
-
-}
-
-function addDataToPopup( /* Title, author, id */ ) {
+function addDataToPopup(id) {
   // umieść informacje w odpowiednim miejscu w popupie
-}
+  let titlePopup = document.querySelector('#popupInput').value;
+  console.log(titlePopup.value);
+  // $inToDo.value = titlePopup;
+};
 
-function acceptChangeHandler() {
+function acceptChangeHandler(id, title) {
   // pobierz dane na temat zadania z popupu (id, nowyTitle, nowyColor ...)
   // Następnie zmodyfikuj element listy wrzucając w niego nowyTitle, nowyColor...
   // closePopup()
+  // let title = document.querySelector('#' + id).querySelector('span').innerText;
+  $list.querySelector('#' + id).querySelector('span').innerText = $popIn.value;
+
+
+  closePopup();
 }
 
 function openPopup() {
@@ -143,13 +164,10 @@ function openPopup() {
   $showModal.style.display = 'block';
 }
 
-function closePopup(event) {
+function closePopup() {
   // Zamknij popup
-  if (event.target.id === 'btn__cancel') {
-    $showModal.style.display = 'none';
-  }
 
-
+  $showModal.style.display = 'none';
 }
 
 function declineChanges() { //niepotrzebna raczej
