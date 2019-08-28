@@ -9,6 +9,7 @@ let $cancelBtn;
 let btnBox;
 let lastTodo = 0;
 let currentTodo;
+let currentlyEditedId;
 const initialList = ['Dzisiaj robię usuwanie', 'Nakarm psa', 'W weekend muszę zrobić aplikację ToDo'];
 
 function main() {
@@ -139,6 +140,7 @@ function editListElement(id, title) {
   // Umieść dane w popupie
   openPopup();
   $popIn.value = title;
+  // currentlyEditedId = document.querySelector('#' + id);
 };
 
 function addDataToPopup(id) {
@@ -152,9 +154,13 @@ function acceptChangeHandler(id, title) {
   // pobierz dane na temat zadania z popupu (id, nowyTitle, nowyColor ...)
   // Następnie zmodyfikuj element listy wrzucając w niego nowyTitle, nowyColor...
   // closePopup()
-  // let title = document.querySelector('#' + id).querySelector('span').innerText;
-  $list.querySelector('#' + id).querySelector('span').innerText = $popIn.value;
 
+
+  // let edited = document.querySelector('#' + id).querySelector('span').innerText;
+  // console.log(edited);
+  $list.querySelector('li').querySelector('span').innerHTML = $popIn.value;
+
+  console.log($popIn.value);
 
   closePopup();
 }
