@@ -140,7 +140,7 @@ function editListElement(id, title) {
   // Umieść dane w popupie
   openPopup();
   $popIn.value = title;
-  // currentlyEditedId = document.querySelector('#' + id);
+  currentlyEditedId = document.querySelector('#' + id);
 };
 
 function addDataToPopup(id) {
@@ -158,7 +158,9 @@ function acceptChangeHandler(id, title) {
 
   // let edited = document.querySelector('#' + id).querySelector('span').innerText;
   // console.log(edited);
-  $list.querySelector('li').querySelector('span').innerHTML = $popIn.value;
+
+  currentlyEditedId.querySelector('span').innerHTML = $popIn.value;
+
 
   console.log($popIn.value);
 
