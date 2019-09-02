@@ -15,7 +15,8 @@ const initialList = ['Dzisiaj robię usuwanie', 'Nakarm psa', 'W weekend muszę 
 function main() {
   prepareDOMElements();
   prepareDOMEvents();
-  prepareInitialList();
+  // prepareInitialList();
+  getTodos();
 }
 
 function prepareDOMElements() {
@@ -40,30 +41,44 @@ function prepareDOMEvents() {
   $cancelBtn.addEventListener('click', closePopup);
   $okBtn.addEventListener('click', acceptChangeHandler);
   $closeBtn.addEventListener('click', closePopup)
-}
+};
 
-function prepareInitialList() {
-  // Tutaj utworzymy sobie początkowe todosy. Mogą pochodzić np. z tablicy
-  initialList.forEach(todo => {
-    addNewElementToList(todo);
-  });
-}
+// function prepareInitialList() {
+//   // Tutaj utworzymy sobie początkowe todosy. Mogą pochodzić np. z tablicy
+//   initialList.forEach(todo => {
+//     addNewElementToList(todo);
+//   });
+// }
 
-function addNewElementToList(title /* Title, author, id */ ) {
+function getTodos() {
+  axios.get('http://195.181.210.249:3000/todo/')
+    .then(function (response) {
+      // handle success
+      console.log(response);
+      if (response.status === 200) {
+        response.data.forEach(todo => {
+          addNewElementToList(todo.title, todo.id);
+        });
+      }
+    })
+};
+
+
+function addNewElementToList(title, id) {
   //obsługa dodawanie elementów do listy
   // $list.appendChild(createElement('nowy', 2))
-  const newElement = createElement(title);
+  const newElement = createElement(title, id);
   $list.appendChild(newElement);
 
-}
+};
 
-function createElement(title /* Title, author, id */ ) {
+function createElement(title, id) {
   // Tworzyc reprezentacje DOM elementu return newElement
   // return newElement
   const newElement = document.createElement('li');
   newElement.classList.add("liElement");
   lastTodo += 1;
-  newElement.id = 'todo-' + lastTodo;
+  newElement.setAttribute('data-id', id);
 
   const newTitleElement = document.createElement('span');
   newTitleElement.classList.add("titleElement");
@@ -115,16 +130,16 @@ function listClickManager(event) {
   // event.target.parentElement.id
   // if (event.target.className === 'edit') { editListElement(id) }
 
-  let id = event.target.parentElement.parentElement.id
+  let id = event.target.parentElement.parentElement.dataset.id;
 
   if (event.target.className === 'del') {
-    let id = event.target.parentElement.parentElement.id;
-    removeListElement(id);
+    let dataId = event.target.parentElement.parentElement.id;
+    removeListElement(dataId);
   } else if (event.target.className === 'edit') {
     let title = document.querySelector('#' + id).querySelector('span').innerText;
     editListElement(id, title);
   } else if (event.target.className === 'done') {
-
+    markElementAsDone(id);
   }
 };
 
@@ -182,10 +197,11 @@ function declineChanges() { //niepotrzebna raczej
   // closePopup()
 }
 
-function markElementAsDone( /* id */ ) {
+function markElementAsDone(id) {
   //zaznacz element jako wykonany (podmień klasę CSS)
-  // const newElement = document.querySelector('li');
-  // $list.classList('markAsDone');
+  let markDone = document.getElementById(id);
+  markDone.classList.toggle('markAsDone');
+
 }
 
 document.addEventListener('DOMContentLoaded', main);

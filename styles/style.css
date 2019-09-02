@@ -1,6 +1,7 @@
 body {
   margin: 0;
   min-width: 250px;
+  font-family: 'roboto', 'sans-serif';
 }
 
 /* Include the padding and border in an element's total width and height */
@@ -63,7 +64,11 @@ ul {
 }
 
 
-/* HEAD */
+/* MAIN */
+
+.wrap {
+  margin: 0 2% 0 2%;
+}
 
 span.addBtn {
   font-size: 30px;
@@ -78,4 +83,45 @@ button {
 
 .markAsDone {
   background-color: red;
+  text-decoration: line-through;
+}
+
+.liElement {
+  display: flex;
+  justify-content: space-between;
+}
+
+.liElement:nth-child(odd) {
+  background-color: #0477BF;
+}
+
+.liElement:nth-child(even) {
+  background-color: #18578f;
+}
+
+.liElement:hover {
+  color: white;
+  background-color: #124673;
+}
+
+.del,
+.edit,
+.done {
+  background-color: #F24C27;
+  border-radius: 28px;
+  border: 1px solid rgb(224, 71, 36);
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: 'Roboto';
+  font-size: 17px;
+  padding: 14px 28px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px rgb(160, 51, 27);
+}
+
+.del:hover,
+.edit:hover,
+.done:hover {
+  background-color: rgb(160, 51, 27);
 }

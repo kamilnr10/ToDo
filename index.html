@@ -5,17 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" type="text/css" href="styles/style.css">
   <title>Todo list</title>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
-  <div id="addForm" class="header">
-    <h2>My ToDo List</h2>
-    <input type="text" id="myInput" placeholder="Title...">
-    <span id="addTodo" class="addBtn">Add</span>
-  </div>
+  <div class="wrap">
+    <div id="addForm" class="header">
+      <h2>My ToDo List</h2>
+      <input type="text" id="myInput" placeholder="Title...">
+      <span id="addTodo" class="addBtn">Add</span>
+    </div>
 
-  <ul id="list">
-  </ul>
+    <ul id="list">
+    </ul>
+  </div>
 
   <div id="myModal" class="modal">
 
@@ -30,6 +33,7 @@
     </div>
 
   </div>
+
   <script src="scripts/script.js"></script>
 </body>
 
