@@ -77,7 +77,7 @@ function createElement(title, id) {
   // return newElement
   const newElement = document.createElement('li');
   newElement.classList.add("liElement");
-  lastTodo += 1;
+  // lastTodo += 1;
   newElement.setAttribute('data-id', id);
 
   const newTitleElement = document.createElement('span');
@@ -133,10 +133,10 @@ function listClickManager(event) {
   let id = event.target.parentElement.parentElement.dataset.id;
 
   if (event.target.className === 'del') {
-    let dataId = event.target.parentElement.parentElement.id;
+    let dataId = event.target.parentElement.parentElement.dataset.id;
     removeListElement(dataId);
   } else if (event.target.className === 'edit') {
-    let title = document.querySelector('#' + id).querySelector('span').innerText;
+    let title = document.querySelector('li[data-id="' + id + '"').querySelector('span').innerText;
     editListElement(id, title);
   } else if (event.target.className === 'done') {
     markElementAsDone(id);
@@ -146,7 +146,8 @@ function listClickManager(event) {
 
 function removeListElement(id) {
   // Usuwanie elementu z listy
-  let liElement = document.querySelector('#' + id);
+  // console.log(id);
+  let liElement = document.querySelector('li[data-id="' + id + '"');
   $list.removeChild(liElement);
 };
 
@@ -155,7 +156,7 @@ function editListElement(id, title) {
   // Umieść dane w popupie
   openPopup();
   $popIn.value = title;
-  currentlyEditedId = document.querySelector('#' + id);
+  currentlyEditedId = document.querySelector('li[data-id="' + id + '"');
 };
 
 function addDataToPopup(id) {
@@ -199,7 +200,7 @@ function declineChanges() { //niepotrzebna raczej
 
 function markElementAsDone(id) {
   //zaznacz element jako wykonany (podmień klasę CSS)
-  let markDone = document.getElementById(id);
+  let markDone = document.querySelector('li[data-id="' + id + '"');
   markDone.classList.toggle('markAsDone');
 
 }
