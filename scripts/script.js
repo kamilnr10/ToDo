@@ -51,6 +51,7 @@ function prepareDOMEvents() {
 // }
 
 function getTodos() {
+  $list.innerHTML = '';
   axios.get('http://195.181.210.249:3000/todo/')
     .then(function (response) {
       // handle success
@@ -71,6 +72,14 @@ function addNewElementToList(title, id) {
   $list.appendChild(newElement);
 
 };
+
+// axios.post('/user', {
+//   firstName: 'Fred',
+//   lastName: 'Flintstone'
+// })
+// .then(function (response) {
+//   console.log(response);
+// })
 
 function createElement(title, id) {
   // Tworzyc reprezentacje DOM elementu return newElement
@@ -110,20 +119,28 @@ function createElement(title, id) {
   btnBox.appendChild(doneBtn);
   return newElement;
 
-}
+};
 
-// if (event.target.id === 'addTodo') {
-//   addNewElementToList($inToDo.value);
-//   $inToDo.value = '';
-// }
+
+// axios.post('http://195.181.210.249:3000/todo/' + newElement).then((response) => {
+//   // console.log('response', response);
+//   if (response.data.status === 0) {
+//     getTodos();
+//   }
+// })
 
 
 function addElement(event) {
+  // if (event.target.id === 'addTodo') {
+  //   addNewElementToList($inToDo.value);
+  //   $inToDo.value = '';
+  // }
   if (event.target.id === 'addTodo') {
-    addNewElementToList($inToDo.value);
-    $inToDo.value = '';
+    axios.post('http://195.181.210.249:3000/todo/' + addNewElementToList($inToDo.value)).then((response) => {
+      // console.log('response', response);
+    })
   }
-}
+};
 
 function listClickManager(event) {
   // Rozstrzygnięcie co dokładnie zostało kliknięte i wywołanie odpowiedniej funkcji
@@ -147,8 +164,14 @@ function listClickManager(event) {
 function removeListElement(id) {
   // Usuwanie elementu z listy
   // console.log(id);
-  let liElement = document.querySelector('li[data-id="' + id + '"');
-  $list.removeChild(liElement);
+  // let liElement = document.querySelector('li[data-id="' + id + '"');
+  // $list.removeChild(liElement);
+  axios.delete('http://195.181.210.249:3000/todo/' + id).then((response) => {
+    // console.log('response', response);
+    if (response.data.status === 0) {
+      getTodos();
+    }
+  })
 };
 
 function editListElement(id, title) {
