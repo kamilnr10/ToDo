@@ -135,9 +135,17 @@ function addElement(event) {
   //   addNewElementToList($inToDo.value);
   //   $inToDo.value = '';
   // }
+  let id = event.target.parentElement.parentElement.dataset.id;
+
   if (event.target.id === 'addTodo') {
-    axios.post('http://195.181.210.249:3000/todo/' + addNewElementToList($inToDo.value)).then((response) => {
+    // console.log("klik");
+    axios.post('http://195.181.210.249:3000/todo/', {
+      title: $inToDo.value
+    }).then((response) => {
       // console.log('response', response);
+      if (response.data.status === 0) {
+        getTodos();
+      }
     })
   }
 };
