@@ -188,6 +188,7 @@ function editListElement(id, title) {
   openPopup();
   $popIn.value = title;
   currentlyEditedId = document.querySelector('li[data-id="' + id + '"');
+
 };
 
 function addDataToPopup(id) {
@@ -206,11 +207,18 @@ function acceptChangeHandler(id, title) {
   // let edited = document.querySelector('#' + id).querySelector('span').innerText;
   // console.log(edited);
 
-  currentlyEditedId.querySelector('span').innerHTML = $popIn.value;
+  // currentlyEditedId.querySelector('span').innerHTML = $popIn.value;
+  // console.log($popIn.value);
 
-
-  console.log($popIn.value);
-
+  axios.put('http://195.181.210.249:3000/todo/' + id, {
+    title: $popIn.value
+  }).then((response) => {
+    // console.log('response', response);
+    if (response.data.status === 0) {
+      getTodos();
+    }
+  });
+  // console.log($popIn.value);
   closePopup();
 }
 

@@ -2,6 +2,7 @@ body {
   margin: 0;
   min-width: 250px;
   font-family: 'roboto', 'sans-serif';
+  background-color: #222629;
 }
 
 /* Include the padding and border in an element's total width and height */
@@ -70,10 +71,48 @@ ul {
   margin: 0 2% 0 2%;
 }
 
+
+
+#addForm {
+  width: 100%;
+  text-align: center;
+}
+
+h2 {
+  margin-top: 20px;
+  font-size: 50px;
+  font-family: 'Shadows Into Light', cursive;
+  color: #FAED26;
+}
+
+span.line {
+  text-decoration: line-through;
+}
+
 span.addBtn {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
   font-size: 30px;
-  border: 2px solid black;
+  text-align: center;
+  color: white;
+  border: 2px solid white;
+  border-radius: 50%;
   cursor: pointer;
+  transition: .3s;
+}
+
+span.addBtn:hover {
+  background-color: #86C232;
+}
+
+input {
+  width: 300px;
+  border-radius: 10px;
+}
+
+ul {
+  margin-top: 20px;
 }
 
 button {
