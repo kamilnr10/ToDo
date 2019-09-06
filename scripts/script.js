@@ -194,7 +194,7 @@ function addDataToPopup(id) {
   // $inToDo.value = titlePopup;
 }
 
-function acceptChangeHandler(id, title) {
+function acceptChangeHandler(id) {
   // pobierz dane na temat zadania z popupu (id, nowyTitle, nowyColor ...)
   // Następnie zmodyfikuj element listy wrzucając w niego nowyTitle, nowyColor...
   // closePopup()
@@ -204,11 +204,7 @@ function acceptChangeHandler(id, title) {
 
   // currentlyEditedId.querySelector('span').innerHTML = $popIn.value;
   // console.log($popIn.value);
-
-  currentlyEditedId = document
-    .querySelector('li[data-id="' + id + '"')
-    .querySelector("span");
-  currentlyEditedId.innerHTML = $popIn.value;
+  currentlyEditedId = id;
   axios
     .put("http://195.181.210.249:3000/todo/" + currentlyEditedId, {
       title: $popIn.value
@@ -216,6 +212,7 @@ function acceptChangeHandler(id, title) {
     .then(response => {
       // console.log('response', response);
       if (response.data.status === 0) {
+        console.log($popIn.value);
         getTodos();
       }
     });
