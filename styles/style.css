@@ -80,7 +80,7 @@ ul {
 
 h2 {
   margin-top: 20px;
-  font-size: 50px;
+  font-size: 80px;
   font-family: 'Shadows Into Light', cursive;
   color: #FAED26;
 }
@@ -108,7 +108,9 @@ span.addBtn:hover {
 
 input {
   width: 300px;
+  margin-bottom: 25px;
   border-radius: 10px;
+  font-size: 16px;
 }
 
 ul {
@@ -120,49 +122,86 @@ button {
   border: 1px solid black;
 }
 
-.markAsDone {
-  background-color: red;
-  text-decoration: line-through;
-}
 
 .liElement {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .liElement:nth-child(odd) {
-  background-color: #0477BF;
+  background-color: #5A5560;
 }
 
 .liElement:nth-child(even) {
-  background-color: #18578f;
+  background-color: rgb(122, 116, 129);
 }
 
 .liElement:hover {
   color: white;
-  background-color: #124673;
+  background-color: rgb(70, 67, 75);
+}
+
+li.liElement span {
+  margin-left: 30px;
+
+}
+
+ul li.markAsDone {
+  background-color: rgba(0, 0, 0, 0.4);
+  text-decoration: line-through;
 }
 
 .del,
 .edit,
 .done {
-  border-radius: 28px;
-  border: 1px solid rgb(255, 255, 255)3);
   display: inline-block;
+  margin: 2px 0 2px 4px;
+  border-radius: 5px;
   cursor: pointer;
   color: #ffffff;
   font-family: 'Roboto';
   font-size: 17px;
-  padding: 14px 28px;
+  padding: 5px 20px;
   text-decoration: none;
-  text-shadow: 1px 1px 4px rgb(160, 51, 27);
+  text-shadow: 1px 1px 4px rgb(0, 0, 0);
   transition: .3s;
 }
 
+.del {
+  color: #ff7f82;
+  border: 2px solid #ff7f82;
+}
+
+.edit {
+  color: #ffa260;
+  border: 2px solid#ffa260;
+}
+
+.done {
+  color: #2EE59D;
+  border: 2px solid #2EE59D;
+}
+
+.del:hover {
+  background-color: #ff7f82;
+  box-shadow: 0px 15px 20px rgba(255, 127, 130, 0.61);
+  color: #fff;
+  transform: translateY(-7px);
+}
 
 
-.del:hover,
-.edit:hover,
+.edit:hover {
+  background-color: #ffa260;
+  box-shadow: 0px 15px 20px rgba(255, 162, 96, 0.61);
+  color: #fff;
+  transform: translateY(-7px);
+}
+
+
 .done:hover {
-  background-color: rgba(235, 235, 235, 0.795);
+  background-color: #2EE59D;
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
 }

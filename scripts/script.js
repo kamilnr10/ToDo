@@ -82,13 +82,25 @@ function addNewElementToList(title, id) {
 //   console.log(response);
 // })
 
-function createElement(title, id) {
+function createElement(title, id, extra) {
   // Tworzyc reprezentacje DOM elementu return newElement
   // return newElement
   const newElement = document.createElement("li");
   newElement.classList.add("liElement");
   // lastTodo += 1;
   newElement.setAttribute("data-id", id);
+  if (extra == true) {
+    console.log("działa");
+    newElement.classList.add("markAsDone");
+  } else {
+    newElement.classList.remove("markAsDone");
+  }
+
+  // Więc Mark as Done, powinien wysyłać put, który zmodyfikuje pole extra w danym elemencie
+
+  // A przy pobieraniu, tak jak teraz korzystasz z title i id, powinieneś jeszcze skorzystać z "extra" i w create-element zrobić if, i w zależności od ifa, od razu wraz z tworzeniem elementju dodawać klasę/ done
+  let boxTitle = document.createElement("div");
+  boxTitle.classList.add("boxTitle");
 
   const newTitleElement = document.createElement("span");
   newTitleElement.classList.add("titleElement");
@@ -109,11 +121,18 @@ function createElement(title, id) {
   doneBtn.className = "done";
   doneBtn.innerText = "Mark as Done";
 
-  newElement.appendChild(newTitleElement);
+  let clip = document.createElement("span");
+  clip.className = "clip";
+  clip.innerHTML = "&#10004;";
+
+  newElement.appendChild(boxTitle);
+  boxTitle.appendChild(clip);
+  boxTitle.appendChild(newTitleElement);
   newElement.appendChild(btnBox);
   btnBox.appendChild(delBtn);
   btnBox.appendChild(editBtn);
   btnBox.appendChild(doneBtn);
+
   return newElement;
 }
 
@@ -133,6 +152,7 @@ function addElement(event) {
 
   if (event.target.id === "addTodo") {
     // console.log("klik");
+
     axios
       .post("http://195.181.210.249:3000/todo/", {
         title: $inToDo.value
@@ -173,7 +193,7 @@ function removeListElement(id) {
   // $list.removeChild(liElement);
   axios.delete("http://195.181.210.249:3000/todo/" + id).then(response => {
     // console.log('response', response);
-    if (response.data.status === 0) {
+    if (response.status === 200) {
       getTodos();
     }
   });
@@ -194,7 +214,7 @@ function addDataToPopup(id) {
   // $inToDo.value = titlePopup;
 }
 
-function acceptChangeHandler(id) {
+function acceptChangeHandler(event) {
   // pobierz dane na temat zadania z popupu (id, nowyTitle, nowyColor ...)
   // Następnie zmodyfikuj element listy wrzucając w niego nowyTitle, nowyColor...
   // closePopup()
@@ -204,15 +224,17 @@ function acceptChangeHandler(id) {
 
   // currentlyEditedId.querySelector('span').innerHTML = $popIn.value;
   // console.log($popIn.value);
-  currentlyEditedId = id;
+  console.log($popIn.value);
+  console.log(currentlyEditedId.dataset.id);
+  const id = currentlyEditedId.dataset.id;
   axios
-    .put("http://195.181.210.249:3000/todo/" + currentlyEditedId, {
+    .put("http://195.181.210.249:3000/todo/" + id, {
       title: $popIn.value
     })
     .then(response => {
-      // console.log('response', response);
-      if (response.data.status === 0) {
-        console.log($popIn.value);
+      // console.log("response", response);
+      if (response.status === 200) {
+        // console.log($popIn.value);
         getTodos();
       }
     });
@@ -236,10 +258,26 @@ function declineChanges() {
   // closePopup()
 }
 
-function markElementAsDone(id) {
+function markElementAsDone(id, extra) {
   //zaznacz element jako wykonany (podmień klasę CSS)
   let markDone = document.querySelector('li[data-id="' + id + '"');
-  markDone.classList.toggle("markAsDone");
+  // markDone.classList.toggle("markAsDone");
+
+  // const id = currentlyEditedId.dataset.id;
+
+  axios
+    .put("http://195.181.210.249:3000/todo/" + id, {
+      extra: 1
+    })
+    .then(response => {
+      // console.log("response", response);
+      if (response.status === 200) {
+        // if (extra == 1) {
+        markDone.classList.toggle("markAsDone");
+        // }
+        getTodos();
+      }
+    });
 }
 
 document.addEventListener("DOMContentLoaded", main);
