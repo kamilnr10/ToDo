@@ -45,8 +45,11 @@ ul {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
   width: 80%;
+  border: 3px solid rgb(78, 78, 78);
+  border-radius: 5px;
+  background: white;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* The Close Button */
@@ -64,6 +67,21 @@ ul {
   cursor: pointer;
 }
 
+.addBtn {
+  border: 3px solid black;
+  box-shadow: 0 0 0 black;
+  transition: all 0.2s;
+}
+
+.addBtn:hover {
+  box-shadow: 0.4rem 0.4rem 0 black;
+  transform: translate(-0.4rem, -0.4rem);
+}
+
+.addBtn:active {
+  box-shadow: 0 0 0 black;
+  transform: translate(0, 0);
+}
 
 /* MAIN */
 
@@ -204,4 +222,11 @@ ul li.markAsDone {
   box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
   color: #fff;
   transform: translateY(-7px);
+}
+
+.del:active,
+.edit:active,
+.done:active {
+  transform: translateY(0);
+
 }

@@ -61,7 +61,7 @@ function getTodos() {
     console.log(response);
     if (response.status === 200) {
       response.data.forEach(todo => {
-        addNewElementToList(todo.title, todo.id);
+        addNewElementToList(todo.title, todo.id, todo.extra);
       });
     }
   });
@@ -89,18 +89,14 @@ function createElement(title, id, extra) {
   newElement.classList.add("liElement");
   // lastTodo += 1;
   newElement.setAttribute("data-id", id);
-  if (extra == true) {
+  if (extra === 0) {
     console.log("działa");
     newElement.classList.add("markAsDone");
-  } else {
-    newElement.classList.remove("markAsDone");
   }
 
   // Więc Mark as Done, powinien wysyłać put, który zmodyfikuje pole extra w danym elemencie
 
   // A przy pobieraniu, tak jak teraz korzystasz z title i id, powinieneś jeszcze skorzystać z "extra" i w create-element zrobić if, i w zależności od ifa, od razu wraz z tworzeniem elementju dodawać klasę/ done
-  let boxTitle = document.createElement("div");
-  boxTitle.classList.add("boxTitle");
 
   const newTitleElement = document.createElement("span");
   newTitleElement.classList.add("titleElement");
@@ -121,18 +117,11 @@ function createElement(title, id, extra) {
   doneBtn.className = "done";
   doneBtn.innerText = "Mark as Done";
 
-  let clip = document.createElement("span");
-  clip.className = "clip";
-  clip.innerHTML = "&#10004;";
-
-  newElement.appendChild(boxTitle);
-  boxTitle.appendChild(clip);
-  boxTitle.appendChild(newTitleElement);
+  newElement.appendChild(newTitleElement);
   newElement.appendChild(btnBox);
   btnBox.appendChild(delBtn);
   btnBox.appendChild(editBtn);
   btnBox.appendChild(doneBtn);
-
   return newElement;
 }
 
@@ -267,14 +256,11 @@ function markElementAsDone(id, extra) {
 
   axios
     .put("http://195.181.210.249:3000/todo/" + id, {
-      extra: 1
+      extra: 0
     })
     .then(response => {
       // console.log("response", response);
       if (response.status === 200) {
-        // if (extra == 1) {
-        markDone.classList.toggle("markAsDone");
-        // }
         getTodos();
       }
     });
