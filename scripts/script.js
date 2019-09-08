@@ -89,9 +89,11 @@ function createElement(title, id, extra) {
   newElement.classList.add("liElement");
   // lastTodo += 1;
   newElement.setAttribute("data-id", id);
-  if (extra === 0) {
+  if (extra == 0) {
     console.log("działa");
     newElement.classList.add("markAsDone");
+  } else {
+    newElement.classList.remove("markAsDone");
   }
 
   // Więc Mark as Done, powinien wysyłać put, który zmodyfikuje pole extra w danym elemencie
@@ -261,6 +263,7 @@ function markElementAsDone(id, extra) {
     .then(response => {
       // console.log("response", response);
       if (response.status === 200) {
+        markDone.classList.toggle("markAsDone");
         getTodos();
       }
     });
