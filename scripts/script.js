@@ -1,4 +1,3 @@
-// Tutaj dodacie zmienne globalne do przechowywania elementów takich jak np. lista czy input do wpisywania nowego todo
 let $list;
 let $inToDo;
 let $inputBtn;
@@ -19,12 +18,10 @@ const initialList = [
 function main() {
   prepareDOMElements();
   prepareDOMEvents();
-  // prepareInitialList();
   getTodos();
 }
 
 function prepareDOMElements() {
-  // To będzie idealne miejsce do pobrania naszych elementów z drzewa DOM i zapisanie ich w zmiennych
   $list = document.getElementById("list");
   $inToDo = document.getElementById("myInput");
   $inputBtn = document.getElementById("addTodo");
@@ -39,20 +36,12 @@ function prepareDOMElements() {
 }
 
 function prepareDOMEvents() {
-  // Przygotowanie listenerów
   $list.addEventListener("click", listClickManager);
   $inputBtn.addEventListener("click", addElement);
   $cancelBtn.addEventListener("click", closePopup);
   $okBtn.addEventListener("click", acceptChangeHandler);
   $closeBtn.addEventListener("click", closePopup);
 }
-
-// function prepareInitialList() {
-//   // Tutaj utworzymy sobie początkowe todosy. Mogą pochodzić np. z tablicy
-//   initialList.forEach(todo => {
-//     addNewElementToList(todo);
-//   });
-// }
 
 function getTodos() {
   $list.innerHTML = "";
@@ -67,27 +56,14 @@ function getTodos() {
   });
 }
 
-function addNewElementToList(title, id) {
-  //obsługa dodawanie elementów do listy
-  // $list.appendChild(createElement('nowy', 2))
-  const newElement = createElement(title, id);
+function addNewElementToList(title, id, extra) {
+  const newElement = createElement(title, id, extra);
   $list.appendChild(newElement);
 }
 
-// axios.post('/user', {
-//   firstName: 'Fred',
-//   lastName: 'Flintstone'
-// })
-// .then(function (response) {
-//   console.log(response);
-// })
-
 function createElement(title, id, extra) {
-  // Tworzyc reprezentacje DOM elementu return newElement
-  // return newElement
   const newElement = document.createElement("li");
   newElement.classList.add("liElement");
-  // lastTodo += 1;
   newElement.setAttribute("data-id", id);
   if (extra == 0) {
     console.log("działa");
@@ -95,10 +71,6 @@ function createElement(title, id, extra) {
   } else {
     newElement.classList.remove("markAsDone");
   }
-
-  // Więc Mark as Done, powinien wysyłać put, który zmodyfikuje pole extra w danym elemencie
-
-  // A przy pobieraniu, tak jak teraz korzystasz z title i id, powinieneś jeszcze skorzystać z "extra" i w create-element zrobić if, i w zależności od ifa, od razu wraz z tworzeniem elementju dodawać klasę/ done
 
   const newTitleElement = document.createElement("span");
   newTitleElement.classList.add("titleElement");
@@ -127,29 +99,18 @@ function createElement(title, id, extra) {
   return newElement;
 }
 
-// axios.post('http://195.181.210.249:3000/todo/' + newElement).then((response) => {
-//   // console.log('response', response);
-//   if (response.data.status === 0) {
-//     getTodos();
-//   }
-// })
-
 function addElement(event) {
-  // if (event.target.id === 'addTodo') {
-  //   addNewElementToList($inToDo.value);
-  //   $inToDo.value = '';
-  // }
   let id = event.target.parentElement.parentElement.dataset.id;
 
   if (event.target.id === "addTodo") {
-    // console.log("klik");
-
+    if (!$inToDo.value.trim()) {
+      return;
+    }
     axios
       .post("http://195.181.210.249:3000/todo/", {
         title: $inToDo.value
       })
       .then(response => {
-        // console.log('response', response);
         if (response.data.status === 0) {
           getTodos();
         }
@@ -158,10 +119,6 @@ function addElement(event) {
 }
 
 function listClickManager(event) {
-  // Rozstrzygnięcie co dokładnie zostało kliknięte i wywołanie odpowiedniej funkcji
-  // event.target.parentElement.id
-  // if (event.target.className === 'edit') { editListElement(id) }
-
   let id = event.target.parentElement.parentElement.dataset.id;
 
   if (event.target.className === "del") {
@@ -178,10 +135,6 @@ function listClickManager(event) {
 }
 
 function removeListElement(id) {
-  // Usuwanie elementu z listy
-  // console.log(id);
-  // let liElement = document.querySelector('li[data-id="' + id + '"');
-  // $list.removeChild(liElement);
   axios.delete("http://195.181.210.249:3000/todo/" + id).then(response => {
     // console.log('response', response);
     if (response.status === 200) {
@@ -191,30 +144,17 @@ function removeListElement(id) {
 }
 
 function editListElement(id, title) {
-  // Pobranie informacji na temat zadania
-  // Umieść dane w popupie
   openPopup();
   $popIn.value = title;
   currentlyEditedId = document.querySelector('li[data-id="' + id + '"');
 }
 
 function addDataToPopup(id) {
-  // umieść informacje w odpowiednim miejscu w popupie
   let titlePopup = document.querySelector("#popupInput").value;
   console.log(titlePopup.value);
-  // $inToDo.value = titlePopup;
 }
 
 function acceptChangeHandler(event) {
-  // pobierz dane na temat zadania z popupu (id, nowyTitle, nowyColor ...)
-  // Następnie zmodyfikuj element listy wrzucając w niego nowyTitle, nowyColor...
-  // closePopup()
-
-  // let edited = document.querySelector('#' + id).querySelector('span').innerText;
-  // console.log(edited);
-
-  // currentlyEditedId.querySelector('span').innerHTML = $popIn.value;
-  // console.log($popIn.value);
   console.log($popIn.value);
   console.log(currentlyEditedId.dataset.id);
   const id = currentlyEditedId.dataset.id;
@@ -234,27 +174,15 @@ function acceptChangeHandler(event) {
 }
 
 function openPopup() {
-  // Otwórz popup
   $showModal.style.display = "block";
 }
 
 function closePopup() {
-  // Zamknij popup
-
   $showModal.style.display = "none";
 }
 
-function declineChanges() {
-  //niepotrzebna raczej
-  // closePopup()
-}
-
 function markElementAsDone(id, extra) {
-  //zaznacz element jako wykonany (podmień klasę CSS)
   let markDone = document.querySelector('li[data-id="' + id + '"');
-  // markDone.classList.toggle("markAsDone");
-
-  // const id = currentlyEditedId.dataset.id;
 
   axios
     .put("http://195.181.210.249:3000/todo/" + id, {
